@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Oauth2LoginController {
 
-    @RequestMapping("/login")
+    @RequestMapping("/login/oauth2")
     public String loginPage() {
         return "login";
     }
