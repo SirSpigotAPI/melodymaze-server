@@ -1,12 +1,12 @@
 package app.melodymaze.server.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class Oauth2LoginController {
 
-    @RequestMapping("/login/oauth2")
+    @RequestMapping("/signin")
     public String loginPage() {
         return "login";
     }

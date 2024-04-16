@@ -46,7 +46,7 @@ public class AuthSecurityConfig {
 
         http.exceptionHandling((exceptions) -> exceptions
                         .defaultAuthenticationEntryPointFor(
-                                new LoginUrlAuthenticationEntryPoint("/login/oauth2"),
+                                new LoginUrlAuthenticationEntryPoint("/login/oauth2/authorization"),
                                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                         )
         ).oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
@@ -57,8 +57,18 @@ public class AuthSecurityConfig {
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-                .oauth2Login(Customizer.withDefaults());
+        http
+                .securityContext(context ->  context.requireExplicitSave(false))
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/signin").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/signin")
+                        .authorizationEndpoint(auth -> auth
+                                .baseUri("/login/oauth2/authorization")
+                        )
+                );
 
         return http.build();
     }
