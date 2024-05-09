@@ -22,11 +22,11 @@ spring:
           discord:
             provider: discord
             client-id: 1228670236887089223
-            client-authentication-method: post
+            client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             scope:
               - identify
-            redirect-uri: localhost:9001/login/oauth2/code/discord
+            redirect-uri: http://localhost:9001/login/oauth2/code/discord
             client-name: melodymaze.app
         provider:
           discord:

@@ -30,7 +30,7 @@ public class AuthSecurityConfig {
 
         http.exceptionHandling((exceptions) -> exceptions
                         .defaultAuthenticationEntryPointFor(
-                                new LoginUrlAuthenticationEntryPoint("/login/oauth2/authorization"),
+                                new LoginUrlAuthenticationEntryPoint(LOGIN_PAGE_URL),
                                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                         )
         ).oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
@@ -44,19 +44,27 @@ public class AuthSecurityConfig {
         http.cors(Customizer.withDefaults());
 
         http
-                .securityContext(context ->  context.requireExplicitSave(false))
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(LOGIN_PAGE_URL).permitAll()
-                        .anyRequest().authenticated()
-                )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage(LOGIN_PAGE_URL)
                         .authorizationEndpoint(auth -> auth
                                 .baseUri("/login/oauth2/authorization")
                         )
+                        .userInfoEndpoint(Customizer.withDefaults())
                 );
 
         return http.build();
     }
+
+//    @Bean
+//    @Order(3)
+//    public SecurityFilterChain redirectionSecurityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .oauth2Login(oauth2 -> oauth2
+//                        .redirectionEndpoint(redirection -> redirection
+//                                .baseUri("/signin/oauth2/callback/*"))
+//                );
+//
+//        return http.build();
+//    }
 
 }
