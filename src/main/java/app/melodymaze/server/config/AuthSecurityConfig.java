@@ -1,5 +1,6 @@
 package app.melodymaze.server.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -15,6 +16,7 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class AuthSecurityConfig {
 
     private final String LOGIN_PAGE_URL = "/signin";
@@ -46,6 +48,7 @@ public class AuthSecurityConfig {
         http
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage(LOGIN_PAGE_URL)
+                        .failureUrl("/error")
                         .authorizationEndpoint(auth -> auth
                                 .baseUri("/login/oauth2/authorization")
                         )
@@ -55,16 +58,28 @@ public class AuthSecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    @Order(3)
-//    public SecurityFilterChain redirectionSecurityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .oauth2Login(oauth2 -> oauth2
-//                        .redirectionEndpoint(redirection -> redirection
-//                                .baseUri("/signin/oauth2/callback/*"))
-//                );
-//
-//        return http.build();
-//    }
+    @Bean
+    @Order(3)
+    public SecurityFilterChain logoutSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    String logutRedirectUrl = request.getParameter("post_logout_redirect_uri");
+
+                    //TODO: Validate that logout redirect Url has valid url format
+                    if(logutRedirectUrl != null) {
+                        response.sendRedirect(logutRedirectUrl);
+                    } else {
+                        response.sendRedirect("/loggedOut");
+                    }
+
+                })
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+        ).authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
+
+        return http.build();
+    }
 
 }
