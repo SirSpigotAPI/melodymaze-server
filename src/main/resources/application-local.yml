@@ -19,7 +19,7 @@ spring:
                 - "openid"
                 - "profile"
               post-logout-redirect-uris:
-                - "http://localhost:4200/home"
+                - "http://localhost:4200"
             require-authorization-consent: false
             require-proof-key: true
       client:
@@ -45,3 +45,4 @@ logging:
       springframework:
         security: debug
         oauth2: debug
+        web: debug
