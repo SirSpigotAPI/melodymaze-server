@@ -47,7 +47,7 @@ public class AuthSecurityConfig {
 
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("signin", "login/*", "logout")
+                        .requestMatchers("signin", "login", "assets/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
