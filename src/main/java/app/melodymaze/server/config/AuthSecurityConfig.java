@@ -59,48 +59,7 @@ public class AuthSecurityConfig {
                                 .baseUri("/login/oauth2/authorization")
                         )
                         .userInfoEndpoint(Customizer.withDefaults())
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            String logutRedirectUrl = request.getParameter("post_logout_redirect_uri");
-
-                            //TODO: Validate that logout redirect Url has valid url format
-                            if(logutRedirectUrl != null) {
-                                response.sendRedirect(logutRedirectUrl);
-                            } else {
-                                response.sendRedirect("/loggedOut");
-                            }
-
-                        })
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .permitAll()
                 );
-
-        return http.build();
-    }
-
-    @Bean
-    @Order(3)
-    public SecurityFilterChain logoutSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessHandler((request, response, authentication) -> {
-                    String logutRedirectUrl = request.getParameter("post_logout_redirect_uri");
-
-                    //TODO: Validate that logout redirect Url has valid url format
-                    if(logutRedirectUrl != null) {
-                        response.sendRedirect(logutRedirectUrl);
-                    } else {
-                        response.sendRedirect("/loggedOut");
-                    }
-
-                })
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .permitAll()
-        ).authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
 
         return http.build();
     }
