@@ -11,6 +11,9 @@ spring:
     driver-class-name: org.h2.Driver
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9001
       authorizationserver:
         client:
           melodymaze-web:

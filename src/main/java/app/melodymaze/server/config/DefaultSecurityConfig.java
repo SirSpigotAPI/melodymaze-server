@@ -33,6 +33,7 @@ public class DefaultSecurityConfig {
                         .anyRequest()
                         .authenticated()
                 )
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage(LOGIN_PAGE_URL)
                         .failureUrl("/error")
