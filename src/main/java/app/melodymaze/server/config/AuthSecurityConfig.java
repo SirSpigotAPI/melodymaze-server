@@ -1,6 +1,8 @@
 package app.melodymaze.server.config;
 
+import app.melodymaze.server.handler.FederatedIdentityAuthenticationSuccessHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -13,16 +15,19 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
-
-import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableWebSecurity
 @Slf4j
+@Component
 public class AuthSecurityConfig {
 
     private final String LOGIN_PAGE_URL = "/signin";
     private final String[] PERMITTED_URLS = {"signin", "login", "assets/**", "error"};
+
+    @Autowired
+    private FederatedIdentityAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Bean
     @Order(1)
@@ -62,9 +67,9 @@ public class AuthSecurityConfig {
                                 .baseUri("/login/oauth2/authorization")
                         )
                         .userInfoEndpoint(Customizer.withDefaults())
+                        .successHandler(authenticationSuccessHandler)
                 );
 
         return http.build();
     }
-
 }
