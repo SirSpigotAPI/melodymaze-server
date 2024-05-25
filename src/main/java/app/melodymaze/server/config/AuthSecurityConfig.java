@@ -14,12 +14,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @Slf4j
 public class AuthSecurityConfig {
 
     private final String LOGIN_PAGE_URL = "/signin";
+    private final String[] PERMITTED_URLS = {"signin", "login", "assets/**", "error"};
 
     @Bean
     @Order(1)
@@ -47,7 +50,7 @@ public class AuthSecurityConfig {
 
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("signin", "login", "assets/**", "error")
+                        .requestMatchers(PERMITTED_URLS)
                         .permitAll()
                         .anyRequest()
                         .authenticated()
