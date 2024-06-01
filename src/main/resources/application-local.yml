@@ -1,3 +1,8 @@
+melodymaze:
+  authorization:
+    server:
+      issuer-url: http://localhost:9001
+
 spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
