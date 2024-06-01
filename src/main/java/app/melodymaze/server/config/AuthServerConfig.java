@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 public class AuthServerConfig {
 
     @Value("${melodymaze.authorization.server.issuer-url}")
-    private static String issuerUrl;
+    private String issuerUrl;
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
