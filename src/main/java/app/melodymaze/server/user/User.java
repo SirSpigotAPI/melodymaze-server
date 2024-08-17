@@ -3,6 +3,7 @@ package app.melodymaze.server.user;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -38,5 +39,11 @@ public class User {
 
     @Setter
     private String friendCode;
+
+    @Setter
+    private RegistrationProvider registrationProvider;
+
+    @Setter
+    private LocalDateTime registrationTime;
 
 }

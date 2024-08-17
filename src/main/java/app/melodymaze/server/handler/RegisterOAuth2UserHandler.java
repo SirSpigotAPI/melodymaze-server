@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -26,6 +27,7 @@ public class RegisterOAuth2UserHandler implements Consumer<OAuth2User> {
                     .avatar(user.getAttribute("avatar"))
                     .locale(user.getAttribute("locale"))
                     .discordId(Long.valueOf(Objects.requireNonNull(user.getAttribute("id"))))
+                    .registrationTime(LocalDateTime.now())
                     .build();
             this.userRepository.save(melodyMazeUser);
         }

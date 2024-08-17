@@ -39,7 +39,7 @@ public class FederatedIdentityAuthenticationSuccessHandler implements Authentica
         if(authentication instanceof OAuth2AuthenticationToken) {
             if(authentication.getPrincipal() instanceof OidcUser) {
                 oidcUserConsumer.accept((OidcUser) authentication.getPrincipal());
-            } else if (authentication.getPrincipal() != null) {
+            } else if(authentication.getPrincipal() != null) {
                 oauth2UserConsumer.accept((OAuth2User) authentication.getPrincipal());
             }
         }
